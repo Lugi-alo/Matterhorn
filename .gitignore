@@ -3,7 +3,6 @@
 
 # Cabal build files
 dist-newstyle/
-dist/
 *.hi
 *.o
 *.prof
