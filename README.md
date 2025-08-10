@@ -3,10 +3,10 @@
 Matterhorn is a custom CMS platform built with a Haskell backend and a React frontend.
 
 ## 🛠️ Tech Stack
-React
-Vite
-SCSS
-Haskell
+- React
+- Vite
+- SCSS
+- Haskell
 
 ## 📦 Installation
 

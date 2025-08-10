@@ -1,0 +1,34 @@
+# Stack build files and artifacts
+.stack-work/
+
+# Cabal build files
+dist-newstyle/
+dist/
+*.hi
+*.o
+*.prof
+*.aux
+*.eventlog
+
+# GHC generated files
+*.ghc.environment.*
+
+# Node depedencies
+node_modules/
+build/
+
+# Vite build output
+dist/
+dist-ssr/
+.vite
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
