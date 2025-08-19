@@ -10,4 +10,8 @@ main = do
     then do
       phases <- getPhases
       runPhases phases
+      let initialised = initialisePhase phases
+      print initialised
+      let moved = moveToPhase initialised
+      print moved
     else putStrLn "Goodbye!"
