@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Phases (
+    Workflow(..),
     Phase(..),
-    runPhases,
-    initialisePhase,
+    initialiseWorkflow,
+    advanceWorkflow,
     moveToPhase
 ) where
 
@@ -17,7 +20,7 @@ instance FromJSON Workflow
 
 data Workflow = Workflow {
     phases :: [Phase] 
-} deriving (Show, Eq)
+} deriving (Show, Eq, Generic)
 
 data Phase = Phase {
     unique :: Int,
@@ -25,9 +28,9 @@ data Phase = Phase {
     description :: String,
     duration :: Int,
     state :: PhaseState
-} deriving (Show, Eq)
+} deriving (Show, Eq, Generic)
 
-data PhaseState = Pending | InProgress | Completed deriving (Show, Eq)
+data PhaseState = Pending | InProgress | Completed deriving (Show, Eq, Generic)
 
 initialiseWorkflow :: Workflow -> Workflow
 initialiseWorkflow (Workflow [])  = (Workflow[])
