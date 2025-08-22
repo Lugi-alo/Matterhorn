@@ -1,21 +1,17 @@
-import React from "react";
-import {useState, useCallback} from "react"
-import ReactFlow from "reactflow";
-import {Background, Controls} from "reactflow";
+import React, { useState } from "react";
 import "reactflow/dist/style.css";
 import "./PhaseEditor.scss";
 
-import PhaseNode from "../../components/Phase-node/PhaseNode";
+import PhaseCanvas from "../../components/Phase-canvas/PhaseCanvas";
+import PhaseToolbar from "../../components/Phase-toolbar/PhaseToolbar"
+import { initialiseWorkflow, advanceWorkflow } from "../../api/phases";
 
-
-const nodeTypes = { phase: PhaseNode };
-
-export default function PhaseCanvas() {
-
+export default function PhaseEditor() {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
 
   const addPhase = () => {
+    console.log("WOrking");
   const id = String(nodes.length + 1);
 
   const newNode = {
@@ -70,24 +66,46 @@ export default function PhaseCanvas() {
   setNodes((previousNodes) => previousNodes.concat(newNode));
 };
 
-  const playPhases = () => {
+  const onPlay = () => {
     console.log("Phases:", nodes); 
+  };
+
+
+  const handleInitialise = async () => {
+    try {
+      const phases = nodes.map((n) => ({
+        name: n.data.name,
+        description: n.data.description,
+        duration: n.data.duration,
+      }));
+
+      const response = await initialiseWorkflow(phases);
+      console.log("Initialised workflow:", response);
+    } catch (err) {
+      console.error("Error initialising workflow:", err);
+    }
+  };
+
+  const handleAdvance = async () => {
+    try {
+      const response = await advanceWorkflow();
+      setWorkflow(response);
+      console.log("Advanced workflow:", response);
+    } catch (err) {
+      console.error("Error advancing workflow:", err);
+    }
   };
 
   return (
     <div className="editor">
-  <div className="toolbar">
-    <button onClick={addPhase}>Add Phase</button>
-    <button onClick={playPhases}>Play</button>
-  </div>
+      <div className="toolbar">
+        <PhaseToolbar addPhase={addPhase} onPlay={onPlay} onInitialise={handleInitialise} onAdvance={handleAdvance} />
 
-  <div className="flow-container">
-    <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-      <Background />
-      <Controls />
-    </ReactFlow>
-  </div>
-</div>
+      </div>
 
+      <div className="flow-container">
+        <PhaseCanvas nodes={nodes} edges={edges} fitView />
+      </div>
+    </div>
   );
 }

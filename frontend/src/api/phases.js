@@ -1,7 +1,7 @@
 const API_URL = "http://localhost:8080";
 
 export const initialiseWorkflow = async () => {
-    const res = await fetch(API_URL + "/initalise");
+    const res = await fetch(API_URL + "/initialise");
     if (!res.ok) {
         throw new Error("Failed to initialise workflow");
     }
