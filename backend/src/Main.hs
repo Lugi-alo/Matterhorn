@@ -15,20 +15,20 @@ workflowVar :: IORef Workflow
 workflowVar = unsafePerformIO $ newIORef (Workflow [])
 {-# NOINLINE workflowVar #-}
 
-initialiseHandler :: Handler Workflow
-initialiseHandler = do
-  liftIO $ modifyIORef workflowVar initialiseWorkflow
-  liftIO $ readIORef workflowVar 
+initialiseHandler :: [Phase] -> Handler Workflow
+initialiseHandler phases = do
+  let workflow = initialiseWorkflow (Workflow phases)
+  liftIO $ writeIORef workflowVar workflow
+  pure workflow
 
 advanceHandler :: Handler Workflow
 advanceHandler = do
   liftIO $ modifyIORef workflowVar advanceWorkflow
   liftIO $ readIORef workflowVar
 
-
 type API =
-    "initialise" :> Get '[JSON] Workflow 
-    :<|> "advance" :> Get '[JSON] Workflow
+    "initialise" :> ReqBody '[JSON] [Phase] :> Post '[JSON] Workflow 
+    :<|> "advance" :> Post '[JSON] Workflow
 
 server :: Server API
 server = initialiseHandler :<|> advanceHandler
