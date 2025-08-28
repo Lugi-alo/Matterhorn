@@ -70,10 +70,10 @@ export default function PhaseEditor() {
     console.log("Phases:", nodes); 
   };
 
-
   const handleInitialise = async () => {
     try {
       const phases = nodes.map((n) => ({
+        unique: parseInt(n.id),
         name: n.data.name,
         description: n.data.description,
         duration: n.data.duration,
